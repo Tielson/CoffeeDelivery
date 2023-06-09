@@ -1,8 +1,7 @@
 # Front-End Coffee Delivery
 
- <h1>
-  <img alt=""  src="https://imgur.com/108b6832-f571-49c2-afb2-1209f2f85096" />
- </h1>
+  <p align="center"><img src="https://i.imgur.com/7RXJpDq.png" alt="project-image"></p>
+
 
 ## Descrição do Projeto
 
