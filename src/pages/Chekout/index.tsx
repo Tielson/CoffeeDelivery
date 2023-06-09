@@ -184,45 +184,47 @@ export function Checkout() {
           <div>
             <h1>Cafés selecionados</h1>
             <div className="coffes">
-              {cart &&
-                cart.map((item) => {
-                  const total = item.coffes.price * item.quantity
-                  return (
-                    <div className="item" key={item.coffes.id}>
-                      <img src={item.coffes.image} alt="" />
-                      <div className="title">
-                        <h2>{item.coffes.title}</h2>
-                        <div className="re_inc_dec">
-                          <div className="buttons">
-                            <button
-                              type="button"
-                              onClick={() => decreaseQuantity(item.coffes.id)}
-                            >
-                              <Minus size={14} weight="bold" />
-                            </button>
-                            <span>{item.quantity}</span>
-                            <button
-                              type="button"
-                              onClick={() => increaseQuantity(item.coffes.id)}
-                            >
-                              <Plus size={14} weight="bold" />
-                            </button>
-                          </div>
-                          <div className="remove">
-                            <button
-                              type="button"
-                              onClick={() => removeFromCart(item.coffes.id)}
-                            >
-                              <Trash size={16} />
-                              REMOVER
-                            </button>
+              <div className="boxCoffees">
+                {cart &&
+                  cart.map((item) => {
+                    const total = item.coffes.price * item.quantity
+                    return (
+                      <div className="item" key={item.coffes.id}>
+                        <img src={item.coffes.image} alt="" />
+                        <div className="title">
+                          <h2>{item.coffes.title}</h2>
+                          <div className="re_inc_dec">
+                            <div className="buttons">
+                              <button
+                                type="button"
+                                onClick={() => decreaseQuantity(item.coffes.id)}
+                              >
+                                <Minus size={14} weight="bold" />
+                              </button>
+                              <span>{item.quantity}</span>
+                              <button
+                                type="button"
+                                onClick={() => increaseQuantity(item.coffes.id)}
+                              >
+                                <Plus size={14} weight="bold" />
+                              </button>
+                            </div>
+                            <div className="remove">
+                              <button
+                                type="button"
+                                onClick={() => removeFromCart(item.coffes.id)}
+                              >
+                                <Trash size={16} />
+                                REMOVER
+                              </button>
+                            </div>
                           </div>
                         </div>
+                        <div className="value">R$ {total.toFixed(2)}</div>
                       </div>
-                      <div className="value">R$ {total.toFixed(2)}</div>
-                    </div>
-                  )
-                })}
+                    )
+                  })}
+              </div>
               <div className="result">
                 <h3>Total de itens</h3>
                 <h3>R$ {(9.9 * quantityOfCoffees()).toFixed(2)}</h3>

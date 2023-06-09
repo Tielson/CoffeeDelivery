@@ -148,11 +148,12 @@ export const Container = styled.div`
 
   .item {
     display: flex;
-    gap: 20px;
+    gap: 24px;
     padding-bottom: 24px;
     border-bottom: 1px solid #e6e5e5;
     width: 100%;
     justify-content: space-between;
+
     img {
       width: 64px;
     }
@@ -360,6 +361,14 @@ export const Container = styled.div`
     display: flex;
     align-items: center;
     gap: 102px;
+  }
+
+  .boxCoffees {
+    overflow: auto;
+    height: 350px;
+  }
+  .boxCoffees > div:nth-child(n + 2) {
+    margin-top: 2.4rem;
   }
 `
 
