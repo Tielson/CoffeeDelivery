@@ -32,23 +32,19 @@ const newFormValidationSchema = zod.object({
 type newFormData = zod.infer<typeof newFormValidationSchema>
 
 export function Checkout() {
+  const [info, setInfo] = useState<newFormData>(() => {
+    const savedData = localStorage.getItem('@valuesForms-001')
+    return savedData ? JSON.parse(savedData) : ({} as newFormData)
+  })
   const { register, handleSubmit, setValue, watch, reset } =
     useForm<newFormData>({
       resolver: zodResolver(newFormValidationSchema),
-      defaultValues: {
-        cep: '',
-        rua: '',
-        num: '',
-        complemento: '',
-        bairro: '',
-        cidade: '',
-        uf: '',
-        paymentMethod: '',
-      },
+      defaultValues: info,
     })
+
   const [isFormValid, setIsFormValid] = useState(false)
   const [selectedOption, setSelectedOption] = useState('')
-  const [info, setInfo] = useState<newFormData>({} as newFormData)
+
   const [formSubmitted, setFormSubmitted] = useState(false)
   const {
     cart,
@@ -68,6 +64,7 @@ export function Checkout() {
 
   function handleSubmitForm(event: newFormData) {
     setInfo(event)
+    localStorage.setItem('@valuesForms-001', JSON.stringify(event))
     setFormSubmitted(true)
     apagarCart()
     reset()

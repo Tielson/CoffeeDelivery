@@ -365,7 +365,7 @@ export const Container = styled.div`
 
   .boxCoffees {
     overflow: auto;
-    height: 350px;
+    max-height: 350px;
   }
   .boxCoffees > div:nth-child(n + 2) {
     margin-top: 2.4rem;
