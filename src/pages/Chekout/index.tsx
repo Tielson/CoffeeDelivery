@@ -43,16 +43,16 @@ export function Checkout() {
     })
 
   const [isFormValid, setIsFormValid] = useState(false)
-  const [selectedOption, setSelectedOption] = useState('')
+  const [selectedOption, setSelectedOption] = useState(info.paymentMethod)
 
   const [formSubmitted, setFormSubmitted] = useState(false)
   const {
     cart,
     decreaseQuantity,
     increaseQuantity,
-    quantityOfCoffees,
     removeFromCart,
-    apagarCart,
+    deleteCart,
+    result,
   } = Cart()
 
   const selectedFields = watch()
@@ -66,7 +66,7 @@ export function Checkout() {
     setInfo(event)
     localStorage.setItem('@valuesForms-001', JSON.stringify(event))
     setFormSubmitted(true)
-    apagarCart()
+    deleteCart()
     reset()
   }
 
@@ -224,7 +224,7 @@ export function Checkout() {
               </div>
               <div className="result">
                 <h3>Total de itens</h3>
-                <h3>R$ {(9.9 * quantityOfCoffees()).toFixed(2)}</h3>
+                <h3>R$ {(9.9 * result).toFixed(2)}</h3>
               </div>
               <div className="result">
                 <h3>Entrega</h3>
@@ -234,10 +234,7 @@ export function Checkout() {
                 <h4>Total</h4>
                 <h4>
                   R$
-                  {(
-                    9.9 * quantityOfCoffees() +
-                    (isFormValid === false ? 0 : 10)
-                  ).toFixed(2)}
+                  {(9.9 * result + (isFormValid === false ? 0 : 10)).toFixed(2)}
                 </h4>
               </div>
               <div className="finished">

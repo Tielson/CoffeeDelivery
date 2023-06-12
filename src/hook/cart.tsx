@@ -1,6 +1,20 @@
-import React, { createContext, useState, useContext } from 'react'
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useReducer,
+  useState,
+} from 'react'
+import {
+  DeleteItemAction,
+  RemoveItemAction,
+  addNewItemAction,
+  decrementItemAction,
+  incrementItemAction,
+} from '../Reduces/Cart/Actions'
+import { CartReducers } from '../Reduces/Cart/Reducer'
 
-interface CoffeProps {
+export interface CoffeProps {
   id: string
   image: string | undefined
   price: number
@@ -14,8 +28,8 @@ export interface CartProps {
 interface CartProviderProps {
   cart: CartProps[]
   addCoffeToCart: (product: CoffeProps, quantity: number) => void
-  quantityOfCoffees: () => number
-  apagarCart: () => void
+  result: number
+  deleteCart: () => void
   removeFromCart: (productId: string) => void
   increaseQuantity: (productId: string) => void
   decreaseQuantity: (productId: string) => void
@@ -28,75 +42,42 @@ interface Props {
 const CartContext = createContext({} as CartProviderProps)
 
 function CartProvider({ children }: Props) {
-  const [cart, setCart] = useState<CartProps[]>([])
-  console.log(cart)
+  const [cart, dispacth] = useReducer(CartReducers, [] as CartProps[])
+  const [result, setResult] = useState(0)
+
   function addCoffeToCart(coffes: CoffeProps, quantity: number) {
-    const containsCoffeeInTheCart = cart.findIndex(
-      (coffe) => coffe.coffes.id === coffes.id,
-    )
-    if (containsCoffeeInTheCart === -1) {
-      return setCart((prevState: any) => [...prevState, { coffes, quantity }])
-    } else {
-      const existingItem = cart[containsCoffeeInTheCart]
-      const updatedItem = { ...existingItem, quantity }
-      setCart((prevState) => [
-        ...prevState.slice(0, containsCoffeeInTheCart),
-        updatedItem,
-        ...prevState.slice(containsCoffeeInTheCart + 1),
-      ])
-    }
-  }
-
-  function quantityOfCoffees() {
-    const quantities = cart.map((item) => item.quantity)
-    const totalQuantity = quantities.reduce((acc, curr) => acc + curr, 0)
-
-    return totalQuantity
+    dispacth(addNewItemAction({ coffes, quantity }))
   }
 
   function removeFromCart(productId: string) {
-    const foundItemIndex = cart.findIndex(
-      (item) => item.coffes.id === productId,
-    )
-    if (foundItemIndex !== -1) {
-      setCart((prevState) => [
-        ...prevState.slice(0, foundItemIndex),
-        ...prevState.slice(foundItemIndex + 1),
-      ])
-    }
+    dispacth(RemoveItemAction(productId))
   }
 
   function increaseQuantity(productId: string) {
-    setCart((prevState) =>
-      prevState.map((item) =>
-        item.coffes.id === productId
-          ? { ...item, quantity: item.quantity + 1 }
-          : item,
-      ),
-    )
+    dispacth(incrementItemAction(productId))
   }
 
   function decreaseQuantity(productId: string) {
-    setCart((prevState) =>
-      prevState.map((item) =>
-        item.coffes.id === productId && item.quantity > 1
-          ? { ...item, quantity: item.quantity - 1 }
-          : item,
-      ),
-    )
+    dispacth(decrementItemAction(productId))
   }
 
-  function apagarCart() {
-    setCart([])
+  function deleteCart() {
+    dispacth(DeleteItemAction())
   }
+
+  useEffect(() => {
+    const quantities = cart?.map((item) => item.quantity)
+    const totalQuantity = quantities.reduce((acc, curr) => acc + curr, 0)
+    setResult(totalQuantity)
+  }, [cart])
 
   return (
     <CartContext.Provider
       value={{
         cart,
         addCoffeToCart,
-        quantityOfCoffees,
-        apagarCart,
+        result,
+        deleteCart,
         removeFromCart,
         increaseQuantity,
         decreaseQuantity,

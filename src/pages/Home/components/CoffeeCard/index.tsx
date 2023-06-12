@@ -15,7 +15,7 @@ export function CoffeeCard({ img, id, tags, title, description }: CoffeeProps) {
   const { addCoffeToCart, cart } = Cart()
   const [image, setImage] = useState<string | undefined>(undefined)
   const [quantity, setQuantity] = useState(
-    cart.find((coffe) => coffe.coffes?.id === id)?.quantity || 1,
+    cart.find((coffe) => coffe?.coffes?.id === id)?.quantity || 1,
   )
 
   function handleToRemove() {
